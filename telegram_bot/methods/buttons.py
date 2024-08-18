@@ -13,8 +13,16 @@ async def build_inline_markup(buttons_dict:dict) -> [InlineKeyboardMarkup, list,
     return InlineKeyboardMarkup(inline_keyboard=inline_keyboard), list(buttons_dict.values()), inline_keyboard
 
 async def build_card_markup(buttons_dict: dict) -> InlineKeyboardMarkup:
+    row = []
     markup = InlineKeyboardBuilder()
     for row_buttons in buttons_dict.values():
+        # for text, callback_data in row_buttons.items():
+        #     try:
+        #         row.append(InlineKeyboardButton(text=text, callback_data=callback_data))
+        #     except Exception as ex:
+        #         print(ex)
+        #         print(text, callback_data)
+        #         pass
         row = [InlineKeyboardButton(text=text, callback_data=callback_data) for text, callback_data in row_buttons.items()]
         markup.row(*row)
     return markup.as_markup()

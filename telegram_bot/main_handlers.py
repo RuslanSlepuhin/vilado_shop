@@ -12,10 +12,10 @@ from telegram_bot.methods.buttons import build_inline_markup
 from telegram_bot.methods.catalog import get_catalog, get_items, CatalogView
 from telegram_bot.methods.registration import Registration
 from telegram_bot.methods.responses import text_from_error_response, text_from_dict
+from telegram_bot.methods.send_media_message import SendMedia
 from telegram_bot.methods.set_commands import set_default_commands
 from telegram_bot.methods import catalog
 from variables import bot_dialog
-
 
 class RegistrationStates(StatesGroup):
     name = State()
@@ -41,7 +41,9 @@ class ViladoShoppingBot:
         self.callbacks = {}
         self.registration = Registration(self)
         self.catalog = CatalogView(self)
+        self.send_media = SendMedia(self)
         self.register_routers()
+        self.cards_steps = {}
 
     def register_routers(self):
         self.dp.include_router(self.catalog.router)

@@ -26,17 +26,18 @@ category_choose = "Выберите категорию:"
 
 # CARDS
 button_left = {'text': "<<", 'callback': 'left'}
-button_number_empty = {'text': "Number*", 'callback': '*'}
+button_number_empty = {'text': "Number", 'callback': '1'}
 button_right = {'text': ">>", 'callback': 'right'}
 button_less = {'text': "-", 'callback': 'less'}
-button_amount_empty = {'text': "Amount*", 'callback': '*'}
+button_amount_empty = {'text': "Amount", 'callback': '1'}
 button_more = {'text': "+", 'callback': 'more'}
-button_to_cart = {'text': "Добавить в корзину", 'callback': 'to cart'}
-button_catalog = {'text': "Каталог", 'callback': 'main menu'}
+button_to_cart = {'text': "🛒 Добавить в корзину", 'callback': 'to cart'}
+button_catalog = {'text': "📕 Каталог", 'callback': 'main menu'}
+
 
 text_empty_to_change_values, callback_empty_to_change_values = [button_number_empty['text'], button_amount_empty['text']], [button_number_empty['callback'], button_amount_empty['callback']]
 
-card_buttons = {
+card_buttons_raw = {
     "1": {
         button_left['text']: button_left['callback'],
         button_number_empty['text']: button_number_empty['callback'],
@@ -54,3 +55,11 @@ card_buttons = {
         button_catalog['text']: button_catalog['callback'],
     }
 }
+card_buttons = card_buttons_raw.copy()
+
+menu_callbacks = []
+for key in card_buttons:
+    for next_key, value in card_buttons[key].items():
+        menu_callbacks.append(value)
+
+menu_callbacks.pop(menu_callbacks.index(button_catalog['callback']))

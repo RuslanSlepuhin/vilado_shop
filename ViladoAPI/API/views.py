@@ -33,11 +33,12 @@ class ItemView(generics.CreateAPIView, generics.ListAPIView):
             if not response:
                 return Response({'error': True, 'detail': category_id, 'queryset': None}, status=status.HTTP_404_NOT_FOUND)
 
-            if not request.query_params.get('next_id_for'):
+            if not request.query_params.get('next_id_for') and not request.query_params.get('previous_id_before'):
                 queryset = ItemModel.objects.filter(category=category_id)
                 if queryset:
                     serializer = self.get_serializer(queryset, many=True)
-                    return Response({"amount": len(serializer.data), "queryset": serializer.data})
+                    amount = self.get_amount_in_category(category_id)
+                    return Response({"amount": amount, "queryset": serializer.data})
                 else:
                     return Response({'error': True, 'detail': "Ничего не нашлось по вашему запросу", 'queryset': None}, status=status.HTTP_404_NOT_FOUND)
 
@@ -45,21 +46,37 @@ class ItemView(generics.CreateAPIView, generics.ListAPIView):
                 if request.query_params['next_id_for'] == '0':
                     queryset = ItemModel.objects.filter(category=category_id).first()
                     if queryset:
+                        amount = self.get_amount_in_category(category_id)
                         serializer = self.get_serializer(queryset)
-                        return Response({"amount": len(serializer.data), "queryset": serializer.data})
+                        return Response({"amount": amount, "queryset": serializer.data})
                     else:
                         return Response({"error": True, "detail": "Ничего не нашлось по вашему запросу", "queryset": []}, status=status.HTTP_404_NOT_FOUND)
 
                 else:
                     queryset = ItemModel.objects.filter(category=category_id, id__gt=request.query_params['next_id_for']).first()
                     if queryset:
+                        amount = self.get_amount_in_category(category_id)
                         serializer = self.get_serializer(queryset)
-                        return Response({"amount": len(serializer.data), "queryset": serializer.data})
+                        return Response({"amount": amount, "queryset": serializer.data})
                     else:
                         return Response({"error": True, "detail": "Ничего не нашлось по вашему запросу", "queryset": []}, status=status.HTTP_404_NOT_FOUND)
 
+            elif request.query_params.get('previous_id_before'):
+                if request.query_params['previous_id_before'] == '0':
+                    queryset = ItemModel.objects.filter(category=category_id).last()
+                else:
+                    queryset = ItemModel.objects.filter(category=category_id, id__lt=request.query_params['previous_id_before']).last()
+                if queryset:
+                    amount = self.get_amount_in_category(category_id)
+                    serializer = self.get_serializer(queryset)
+                    return Response({"amount": amount, "queryset": serializer.data})
+                else:
+                    return Response({"error": True, "detail": "Ничего не нашлось по вашему запросу", "queryset": []}, status=status.HTTP_404_NOT_FOUND)
 
         return self.list(request, *args, **kwargs)
+
+    def get_amount_in_category(self, category_id):
+        return ItemModel.objects.filter(category=category_id).count()
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
