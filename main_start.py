@@ -10,7 +10,7 @@ def start_vilado_bot():
     asyncio.run(bot.handlers())
 
 def start_django_server():
-    command = 'python ViladoAPI//manage.py runserver 9000'
+    command = 'python ViladoAPI//manage.py runserver 8000'
     process = subprocess.Popen(command, shell=True)
     process.communicate()
 
