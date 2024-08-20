@@ -1,3 +1,5 @@
+from config.os_system import os_system
+
 start_answer = "Этот бот поможет вам сделать заказ по каталогу товара. Нажмите кнопку 'далее', чтобы начать \n\n[ЗДЕСЬ МОЖЕТ БЫТЬ ЛЮБОЙ ТЕКСТ ЗАКАЗЧИКА]"
 start_answer_buttons = {
     "В КАТАЛОГ": "main menu"
@@ -14,7 +16,7 @@ FSM_form_ask_name = "Введите ваше имя:"
 FSM_form_ask_phone_number = "Введите ваш номер телефона:"
 
 # API URLS
-domain = "http://127.0.0.1:8000/"
+domain = "http://127.0.0.1:8000/" if os_system == 'windows' else "http://77.232.137.16/"
 app_ver = "api/v1/"
 user_url = domain + app_ver + "user/"
 categories_url = domain + app_ver + "categories/"
