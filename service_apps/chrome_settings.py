@@ -1,6 +1,7 @@
 from selenium.webdriver.chrome.options import Options
 
 chrome_driver_path = "./service_apps/chrome_driver/chromedriver.exe"
+ubuntu_chrome_driver_path = "./service_apps/chrome_driver/Ubuntu/chromedriver"
 
 options = Options()
 # options.add_argument('--headless')

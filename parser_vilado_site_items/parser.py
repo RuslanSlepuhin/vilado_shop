@@ -20,7 +20,7 @@ class ViladoParser:
             self.browser = webdriver.Chrome(service=service, options=chrome_settings.options)
         except:
             try:
-                service = Service(ChromeDriverManager(version="127.0", path="https://storage.googleapis.com/chrome-for-testing-public/127.0.6533.119/win64/chromedriver-win64.zip").install())
+                service = Service(chrome_settings.chrome_driver_path)
                 self.browser = webdriver.Chrome(service=service, options=chrome_settings.options)
             except Exception as ex:
                 print(f"ERROR get_browser", ex)
