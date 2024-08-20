@@ -2,3 +2,4 @@
 /venv/
 /ViladoAPI/API/migrations/
 /Task_sheet.txt
+/ViladoAPI/db.sqlite3
