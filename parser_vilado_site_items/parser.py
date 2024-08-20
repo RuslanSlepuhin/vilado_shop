@@ -20,8 +20,12 @@ class ViladoParser:
             self.browser = webdriver.Chrome(service=service, options=chrome_settings.options)
         except:
             try:
-                service = Service(chrome_settings.chrome_driver_path)
-                self.browser = webdriver.Chrome(service=service, options=chrome_settings.options)
+                self.browser = webdriver.Chrome(
+                    executable_path=chrome_settings.chrome_driver_path,
+                    options=chrome_settings.options
+                )
+                # service = Service(chrome_settings.chrome_driver_path)
+                # self.browser = webdriver.Chrome(service=service, options=chrome_settings.options)
             except Exception as ex:
                 print(f"ERROR get_browser", ex)
             pass
