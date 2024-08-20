@@ -72,6 +72,15 @@ class ItemView(generics.CreateAPIView, generics.ListAPIView):
                     return Response({"amount": amount, "queryset": serializer.data})
                 else:
                     return Response({"error": True, "detail": "Ничего не нашлось по вашему запросу", "queryset": []}, status=status.HTTP_404_NOT_FOUND)
+        elif request.query_params.get('id'):
+            try:
+                id = request.query_params['id']
+                queryset = ItemModel.objects.get(id=id)
+                serializer = model_to_dict(queryset)
+                return Response(serializer)
+            except Exception as ex:
+                print(ex)
+                return Response([], status=status.HTTP_404_NOT_FOUND)
 
         return self.list(request, *args, **kwargs)
 
@@ -125,4 +134,16 @@ class CategoryView(generics.CreateAPIView, generics.ListAPIView):
 class ShoppingCartView(generics.CreateAPIView, generics.ListAPIView, generics.UpdateAPIView, generics.DestroyAPIView):
     queryset = ShoppingCartModel.objects.all()
     serializer_class = ShoppingCartSerializer
+
+    def get(self, request, *args, **kwargs):
+        user = request.query_params['user'] if request.query_params.get('user') else None
+        item = request.query_params['item'] if request.query_params.get('item') else None
+
+        if user and item:
+            queryset = ShoppingCartModel.objects.filter(user=user, item=item)
+        elif user and not item:
+            queryset = ShoppingCartModel.objects.filter(user=user)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 

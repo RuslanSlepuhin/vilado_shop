@@ -41,10 +41,20 @@ class Recycled(models.Model):
       return str(f"{self.user}->{self.item}")
 
 class ShoppingCartModel(models.Model):
-    item = models.ForeignKey(ItemModel, on_delete=models.CASCADE)
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     amount = models.IntegerField(auto_created=0)
+    status = models.CharField(
+        max_length=50,
+        choices=[
+            ('process', 'process'),
+            ('confirmed_by_user', 'confirmed_by_user'),
+            ('confirmed_by_sales_department', 'confirmed_by_sales_department'),
+            ('goods shipped', 'goods shipped')
+        ],
+        default='process'
+    )
+    item = models.ForeignKey(ItemModel, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
 
     def __str__(self):
       return str(f"{self.user}->{self.item}->{self.amount}")

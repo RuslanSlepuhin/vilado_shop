@@ -19,10 +19,19 @@ class SendMedia:
             )
         else:
             message_id = self.b_cls.cards_steps[kwargs['message'].chat.id][variables.message].message_id
-            media = types.InputMediaPhoto(media=img_url, caption=caption)
-            self.b_cls.cards_steps[kwargs['message'].chat.id][variables.message] = \
+            try:
+                media = types.InputMediaPhoto(media=img_url, caption=caption)
+                self.b_cls.cards_steps[kwargs['message'].chat.id][variables.message] = \
+                    await self.b_cls.bot.edit_message_media(
+                    chat_id=kwargs['message'].chat.id,
+                    message_id=message_id, media=media,
+                    reply_markup=keyboard
+                    )
+            except Exception as ex:
+                media = types.InputMediaPhoto(media=img_url, caption=str(ex))
                 await self.b_cls.bot.edit_message_media(
                     chat_id=kwargs['message'].chat.id,
                     message_id=message_id, media=media,
                     reply_markup=keyboard
                 )
+

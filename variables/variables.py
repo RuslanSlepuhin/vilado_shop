@@ -13,6 +13,8 @@ card_id = "card_id"
 message = "message"
 last_callback_value = "last_callback_value"
 serial_number = "serial_number"
+amount = "amount"
+keyboard = "keyboard"
 
 #site
 logo = "http://vilado.ru/t/v197/images/logo_.png"

@@ -12,3 +12,5 @@ def text_from_dict(d:dict) -> str:
     for key, value in d.items():
         text += f"{key}: {value}\n"
     return text
+
+

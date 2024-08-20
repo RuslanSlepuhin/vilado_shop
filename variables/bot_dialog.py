@@ -19,40 +19,54 @@ app_ver = "api/v1/"
 user_url = domain + app_ver + "user/"
 categories_url = domain + app_ver + "categories/"
 items_url = domain + app_ver + "items/"
+shopping_cart_url = domain + app_ver + "shopping-cart/"
 
 # Database
 empty_base = "Ничего не нашлось по вашему запросу"
 category_choose = "Выберите категорию:"
+empty_shopping_cart = "У Вас не выбрано ни одного товара"
 
 # CARDS
+skip_callback = "1"
+number_row = "1"
+amount_row = "2"
+
 button_left = {'text': "<<", 'callback': 'left'}
-button_number_empty = {'text': "Number", 'callback': '1'}
+button_number_empty = {'text': "Number", 'callback': skip_callback}
 button_right = {'text': ">>", 'callback': 'right'}
+button_less_10 = {'text': "-10", 'callback': 'less10'}
 button_less = {'text': "-", 'callback': 'less'}
-button_amount_empty = {'text': "Amount", 'callback': '1'}
+button_amount_empty = {'text': "Amount", 'callback': skip_callback}
 button_more = {'text': "+", 'callback': 'more'}
-button_to_cart = {'text': "🛒 Добавить в корзину", 'callback': 'to cart'}
+button_more_10 = {'text': "+10", 'callback': 'more10'}
+button_to_cart = {'text': "🛒 Добавить в корзину", 'callback': 'add to cart'}
 button_catalog = {'text': "📕 Каталог", 'callback': 'main menu'}
+button_show_shopping_cart = {'text': "Перейти в корзину", 'callback': 'show shopping cart'}
 
 
 text_empty_to_change_values, callback_empty_to_change_values = [button_number_empty['text'], button_amount_empty['text']], [button_number_empty['callback'], button_amount_empty['callback']]
 
 card_buttons_raw = {
-    "1": {
+    number_row: {
         button_left['text']: button_left['callback'],
         button_number_empty['text']: button_number_empty['callback'],
         button_right['text']: button_right['callback'],
     },
-    "2": {
+    amount_row: {
+        button_less_10['text']: button_less_10['callback'],
         button_less['text']: button_less['callback'],
         button_amount_empty['text']: button_amount_empty['callback'],
         button_more['text']: button_more['callback'],
+        button_more_10['text']: button_more_10['callback'],
     },
     "3": {
         button_to_cart['text']: button_to_cart['callback'],
     },
     "4": {
         button_catalog['text']: button_catalog['callback'],
+    },
+    "5": {
+        button_show_shopping_cart['text']: button_show_shopping_cart['callback'],
     }
 }
 card_buttons = card_buttons_raw.copy()
@@ -63,3 +77,21 @@ for key in card_buttons:
         menu_callbacks.append(value)
 
 menu_callbacks.pop(menu_callbacks.index(button_catalog['callback']))
+amount_cannot_be_empty = "Количество не может быть равным нулю"
+items_on_the_cart = "Товар добавлен в корзину"
+item_was_delete_from_shopping_cart = "Товар удален из корзины"
+amount_has_been_updated = "Количество обновлено"
+have_nothing = "Ничего не нашлось"
+
+# SHOPPING CART
+empty_shopping_cart_buttons = {
+    button_catalog['text']: button_catalog['callback']
+}
+
+confirm_callback = 'confirm'
+confirm_shopping_cart_buttons = {
+    "Отправить заявку": confirm_callback,
+    button_catalog['text']: button_catalog['callback'],
+
+}
+shopping_cart_view = "КОРЗИНА\n\n"

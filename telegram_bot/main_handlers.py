@@ -7,6 +7,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
 from aiogram.fsm.storage.memory import MemoryStorage
 from service_apps import config_init
+from telegram_bot.methods.api_interaction import APIInteraction
 from telegram_bot.methods.buttons import build_inline_markup
 # from telegram_bot.methods import registration
 from telegram_bot.methods.catalog import get_catalog, get_items, CatalogView
@@ -15,6 +16,7 @@ from telegram_bot.methods.responses import text_from_error_response, text_from_d
 from telegram_bot.methods.send_media_message import SendMedia
 from telegram_bot.methods.set_commands import set_default_commands
 from telegram_bot.methods import catalog
+from telegram_bot.methods.shopping_cart import ShoppingCart
 from variables import bot_dialog
 
 class RegistrationStates(StatesGroup):
@@ -42,14 +44,19 @@ class ViladoShoppingBot:
         self.registration = Registration(self)
         self.catalog = CatalogView(self)
         self.send_media = SendMedia(self)
+        self.api = APIInteraction(self)
+        self.shopping_cart = ShoppingCart(self)
         self.register_routers()
         self.cards_steps = {}
 
     def register_routers(self):
         self.dp.include_router(self.catalog.router)
         self.dp.include_router(self.registration.router)
+        self.dp.include_router(self.shopping_cart.router)
 
     async def handlers(self):
+        await set_default_commands(self.bot)
+
         @self.router.message(RegistrationStates.name)
         async def process_name(message: types.Message, state: FSMContext):
             await state.update_data(name=message.text)
@@ -107,9 +114,7 @@ class ViladoShoppingBot:
         async def on_startup(dp):
             await set_default_commands(dp.bot)
 
-
-        await self.dp.start_polling(self.bot, on_startup=on_startup)
-
+        await self.dp.start_polling(self.bot, on_startup=on_startup, skip_updates=True)
 
     async def send_message(self, message, text, **kwargs) -> types.Message:
         disable_web_page_preview = True if kwargs.get('disable_web_page_preview') else False

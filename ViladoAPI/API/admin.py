@@ -5,4 +5,4 @@ from .models import *
 admin.site.register(CategoriesModel)
 admin.site.register(ItemModel)
 admin.site.register(CustomUser)
-admin.site.register(Recycled)
+admin.site.register(ShoppingCartModel)
