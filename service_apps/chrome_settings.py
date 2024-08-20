@@ -1,6 +1,7 @@
 from selenium.webdriver.chrome.options import Options
+from config.os_system import os_system
 
-chrome_driver_path = "./service_apps/chrome_driver/chromedriver.exe"
+chrome_driver_path = "./service_apps/chrome_driver/chromedriver.exe" if os_system.lower() == 'windows' else "./service_apps/chrome_driver/chromedriver"
 ubuntu_chrome_driver_path = "./service_apps/chrome_driver/chromedriver"
 
 options = Options()
